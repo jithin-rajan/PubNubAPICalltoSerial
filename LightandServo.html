@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+ <!--- Run with Live Server extension from VS Code --->
+ <!--- Author : Jithin Rajan Varghese , Email to :- jithinrajanvarghese@gmail.com / varghj11@mcmaster.ca --->
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.3/jquery.mobile.min.css" />
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.3/jquery.mobile.min.js"></script>
+    <script src="http://cdn.pubnub.com/pubnub.min.js"></script>
+</head>
+
+<body>
+    <div data-role="page">
+        <div data-role="header">
+            <h1>Light and servo actuation</h1>
+        </div>
+        <!--- Label for Greetings --->
+        <p>
+
+        </p>
+        <form>
+            <div class="ui-body">
+                <div id="ui-bar-test" class="ui-bar ui-bar-a ui-corner-all">
+                    <label for="textinput-s">Light</label>
+                </div>
+            </div>
+        </form>
+        <!--- Button under Greetings Tab--->
+        <form class="ui-mini">
+            <p>
+            </p>
+            <div class="ui-body  ui-corner-all">
+                <div class="ui-body ui-body-a ui-corner-all">
+                    <div class="ui-btn-inline">
+                        <button type="button" class="ui-btn-inline" class="ui-btn ui-shadow" id="lightOn"
+                            value="1">On</button>
+                        <button type="button" class="ui-btn-inline" class="ui-btn ui-shadow" id="lightOff"
+                            value="0">Off</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!--- Label for Controls--->
+            <p>
+
+            </p>
+            <form>
+            <div class="ui-body">
+                <div id="ui-bar-test" class="ui-bar ui-bar-a ui-corner-all">
+                    <label for="textinput-s">Servo</label>
+                </div>
+            </div>
+        </form>
+        <!--- Button under Controls Tab--->
+        <form class="ui-mini">
+            <p>
+            </p>
+            <div class="ui-body  ui-corner-all">
+                <div class="ui-body ui-body-a ui-corner-all">
+                    <div class="ui-btn-inline">
+                        <button type="button" class="ui-btn-inline" class="ui-btn ui-shadow"
+                            id="servoOpen" value="1">Open</button>
+                        <button type="button" class="ui-btn-inline" class="ui-btn ui-shadow"
+                            id="servoClose" value="0">Close</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!--- JavaScript for pub nub connection --->
+        <script>
+            $(function () {
+                var channel = ""; // give your pubnub channel id  
+                var pubnub = PUBNUB.init({
+                    publish_key: '', // give your pub key from pubnub
+                    subscribe_key: '' // give your sub key from pubnub 
+                });
+                $('button').click(function () {
+                    var value = $(this).attr('value');
+                    var module = $(this).attr('id');
+                    pubnub.publish({
+                        channel: channel,
+                        message: {
+                            "id": module,
+                            "value": value
+                        }
+                    });
+                });
+            });
+        </script>
+</body>
+
+</html>
